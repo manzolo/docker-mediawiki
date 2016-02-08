@@ -69,9 +69,10 @@ VOLUME  ["/etc/mysql", "/var/lib/mysql" ]
 RUN curl -SL https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN mkdir -p /src/php/mediawiki
-RUN cd /src/php/mediawiki && git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git && composer install --no-dev
-#For release version, after git clone, before composer install
-#git checkout -b REL1_26 origin/REL1_26
+#For latest version of mediawiki
+#RUN cd /src/php/mediawiki && git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git && cd core && composer install --no-dev
+#For a release version
+RUN cd /src/php/mediawiki && git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git && cd core && git checkout -b REL1_26 origin/REL1_26 && composer install --no-dev
 
 ADD mediawiki_virtualhost.localhost.conf /etc/apache2/sites-available/mediawiki.localhost.conf
 RUN a2ensite mediawiki.localhost.conf
